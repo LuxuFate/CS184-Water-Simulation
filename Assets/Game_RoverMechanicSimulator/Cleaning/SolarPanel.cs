@@ -10,6 +10,9 @@ public class SolarPanel : MonoBehaviour {
     [SerializeField] private Texture2D dirtBrush;
     [SerializeField] private Material material;
     [SerializeField] private TextMeshProUGUI uiText;
+    [SerializeField] private GameObject water;
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject hose;
 
     private Texture2D dirtMaskTexture;
     private bool isFlipped;
@@ -17,6 +20,8 @@ public class SolarPanel : MonoBehaviour {
     private float dirtAmountTotal;
     private float dirtAmount;
     private Vector2Int lastPaintPixelPosition;
+
+    private GameObject waterStream;
 
     private void Awake() {
         dirtMaskTexture = new Texture2D(dirtMaskTextureBase.width, dirtMaskTextureBase.height);
@@ -42,6 +47,11 @@ public class SolarPanel : MonoBehaviour {
     private void Update() {
         if (Input.GetMouseButton(0)) {
 
+            if (player.transform.Find("Water 1(Clone)") == null) {
+                // Vector3 waterPosition = new Vector3(0, 4, 0);
+                waterStream = Instantiate(water, hose.transform.position, player.transform.rotation);
+                waterStream.transform.parent = player.transform;
+            }
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit)) {
                 Vector2 textureCoord = raycastHit.textureCoord;
 
@@ -99,6 +109,11 @@ public class SolarPanel : MonoBehaviour {
                 //*/
 
                 dirtMaskTexture.Apply();
+            }
+        } else {
+            // GameObject waterStream = player.transform.Find("Water 1(Clone)");
+            if (waterStream != null) {
+                Destroy(waterStream);
             }
         }
 

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CameraFollowPlayer : MonoBehaviour
 {
+
+    void Start() {
+        transform.rotation = Quaternion.LookRotation(Vector3.zero);
+    }
     public Transform player;
     public float pLerp = 0.02f;
     public float rLerp = 0.02f;
